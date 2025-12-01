@@ -19,7 +19,7 @@ const Dashboard = () => {
         try {
             setLoading(true);
             setError('');
-            const { data } = await api.get('/laundry');
+            const { data } = await api.get('/api/laundry');
             setLaundry(data);
         } catch (error) {
             console.error(error);
@@ -68,7 +68,7 @@ const Dashboard = () => {
         setSubmitting(true);
         
         try {
-            await api.post('/laundry', newRequest);
+            await api.post('/api/laundry', newRequest);
             setSuccess('Laundry request submitted successfully!');
             fetchLaundry();
             setNewRequest({ clothes: [{ itemType: 'T-Shirt', quantity: 1 }], specialInstructions: '' });

@@ -15,7 +15,7 @@ const EmployeeDashboard = () => {
         try {
             setLoading(true);
             setError('');
-            const { data } = await api.get('/employee/orders');
+            const { data } = await api.get('/api/employee/orders');
             setOrders(data);
         } catch (error) {
             console.error(error);

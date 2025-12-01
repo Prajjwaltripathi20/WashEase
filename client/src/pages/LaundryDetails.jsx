@@ -22,14 +22,14 @@ const LaundryDetails = () => {
     const fetchLaundryDetails = async () => {
         try {
             setLoading(true);
-            const { data } = await api.get('/laundry');
+            const { data } = await api.get('/api/laundry');
             const found = data.find(req => req._id === id);
             if (found) {
                 setLaundry(found);
             } else {
                 // Try to get from all laundry if user is admin/washer
                 if (user?.role === 'admin' || user?.role === 'washer') {
-                    const { data: allData } = await api.get('/laundry/all');
+                    const { data: allData } = await api.get('/api/laundry/all');
                     const foundAll = allData.find(req => req._id === id);
                     if (foundAll) {
                         setLaundry(foundAll);
@@ -55,7 +55,7 @@ const LaundryDetails = () => {
 
         try {
             setUpdating(true);
-            await api.put(`/laundry/${id}`, { status: newStatus });
+            await api.put(`/api/laundry/${id}`, { status: newStatus });
             fetchLaundryDetails();
         } catch (error) {
             console.error(error);

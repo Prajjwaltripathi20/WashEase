@@ -14,7 +14,7 @@ const AdminDashboard = () => {
         try {
             setLoading(true);
             setError('');
-            const { data } = await api.get('/laundry/all');
+            const { data } = await api.get('/api/laundry/all');
             setLaundry(data);
         } catch (error) {
             console.error(error);
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
 
     const handleStatusUpdate = async (id, newStatus) => {
         try {
-            await api.put(`/laundry/${id}`, { status: newStatus });
+            await api.put(`/api/laundry/${id}`, { status: newStatus });
             fetchAllLaundry();
         } catch (error) {
             console.error(error);

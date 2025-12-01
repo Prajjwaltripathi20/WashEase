@@ -23,7 +23,7 @@ const EmployeeOrderDetails = () => {
     const fetchOrderDetails = async () => {
         try {
             setLoading(true);
-            const { data } = await api.get(`/employee/orders/${id}`);
+            const { data } = await api.get(`/api/employee/orders/${id}`);
             setOrder(data);
         } catch (error) {
             console.error(error);
@@ -36,7 +36,7 @@ const EmployeeOrderDetails = () => {
     const handleAccept = async () => {
         try {
             setActionLoading('accept');
-            await api.post(`/employee/orders/${id}/accept`);
+            await api.post(`/api/employee/orders/${id}/accept`);
             await fetchOrderDetails();
         } catch (error) {
             setError(error.response?.data?.message || 'Failed to accept order');
@@ -52,7 +52,7 @@ const EmployeeOrderDetails = () => {
         }
         try {
             setActionLoading('reject');
-            await api.post(`/employee/orders/${id}/reject`, { reason: rejectReason });
+            await api.post(`/api/employee/orders/${id}/reject`, { reason: rejectReason });
             setShowRejectModal(false);
             setRejectReason('');
             await fetchOrderDetails();
@@ -66,7 +66,7 @@ const EmployeeOrderDetails = () => {
     const handleStatusUpdate = async (newStatus) => {
         try {
             setActionLoading(newStatus);
-            await api.put(`/employee/orders/${id}/status`, { 
+            await api.put(`/api/employee/orders/${id}/status`, { 
                 status: newStatus,
                 notes: statusNotes || undefined
             });
