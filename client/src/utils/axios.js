@@ -2,10 +2,14 @@ import axios from 'axios';
 
 const rawBase = import.meta.env.VITE_API_BASE_URL;
 
-// Use the raw base URL if provided (no automatic '/api' append).
-// If not provided, use empty string so relative '/api/..' requests hit the frontend origin
-// and can be proxied in dev via Vite's server.proxy configuration.
-const BASE_URL = rawBase ? rawBase.replace(/\/+$/g, '') : '';
+const normalizeBase = (b) => {
+  if (!b) return '/api';
+  const trimmed = b.replace(/\/+$/g, '');
+  if (trimmed.endsWith('/api')) return trimmed;
+  return `${trimmed}/api`;
+};
+
+const BASE_URL = normalizeBase(rawBase);
 
 const api = axios.create({
   baseURL: BASE_URL,
