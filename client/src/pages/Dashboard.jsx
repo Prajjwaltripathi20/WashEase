@@ -1,0 +1,243 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api from '../utils/axios';
+import { useAuth } from '../context/AuthContext';
+
+const Dashboard = () => {
+    const { user } = useAuth();
+    const [laundry, setLaundry] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [newRequest, setNewRequest] = useState({
+        clothes: [{ itemType: 'T-Shirt', quantity: 1 }],
+        specialInstructions: ''
+    });
+
+    const fetchLaundry = async () => {
+        try {
+            setLoading(true);
+            setError('');
+            const { data } = await api.get('/laundry');
+            setLaundry(data);
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+                setError('Cannot connect to server. Please make sure the backend server is running on port 5001.');
+            } else if (error.response?.status === 503) {
+                setError('Database not connected. Please check server configuration.');
+            } else {
+                setError(error.response?.data?.message || 'Failed to fetch laundry requests');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            fetchLaundry();
+        }
+    }, [user]);
+
+    const handleRemoveRow = (index) => {
+        if (newRequest.clothes.length > 1) {
+            const updatedClothes = newRequest.clothes.filter((_, i) => i !== index);
+            setNewRequest({ ...newRequest, clothes: updatedClothes });
+        }
+    };
+
+    const handleAddRow = () => {
+        setNewRequest({
+            ...newRequest,
+            clothes: [...newRequest.clothes, { itemType: '', quantity: 1 }]
+        });
+    };
+
+    const handleItemChange = (index, field, value) => {
+        const updatedClothes = [...newRequest.clothes];
+        updatedClothes[index][field] = field === 'quantity' ? parseInt(value) || 1 : value;
+        setNewRequest({ ...newRequest, clothes: updatedClothes });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+        setSubmitting(true);
+        
+        try {
+            await api.post('/laundry', newRequest);
+            setSuccess('Laundry request submitted successfully!');
+            fetchLaundry();
+            setNewRequest({ clothes: [{ itemType: 'T-Shirt', quantity: 1 }], specialInstructions: '' });
+        } catch (error) {
+            if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+                setError('Cannot connect to server. Please make sure the backend server is running on port 5001.');
+            } else if (error.response?.status === 503) {
+                setError('Database not connected. Please check server configuration.');
+            } else {
+                setError(error.response?.data?.message || 'Failed to submit request');
+            }
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'delivered': return 'bg-green-100 text-green-800';
+            case 'pending': return 'bg-yellow-100 text-yellow-800';
+            case 'picked_up': return 'bg-blue-100 text-blue-800';
+            case 'in_progress': return 'bg-purple-100 text-purple-800';
+            case 'ready': return 'bg-indigo-100 text-indigo-800';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+
+    const itemTypes = ['T-Shirt', 'Shirt', 'Pant', 'Jeans', 'Trouser', 'Shorts', 'Jacket', 'Sweater', 'Dress', 'Skirt', 'Socks', 'Underwear', 'Towel', 'Bed Sheet', 'Pillow Cover', 'Other'];
+
+    return (
+        <div className="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8 fade-in">
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+                <p className="mt-2 text-gray-600">Manage your laundry requests</p>
+            </div>
+
+            {error && (
+                <div className="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
+                    {error}
+                </div>
+            )}
+
+            {success && (
+                <div className="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
+                    {success}
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                {/* New Request Form */}
+                <div className="p-6 bg-white shadow-lg rounded-xl card-hover">
+                    <h2 className="mb-6 text-xl font-semibold text-gray-800">New Laundry Request</h2>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-3">
+                            {newRequest.clothes.map((item, index) => (
+                                <div key={index} className="flex items-center gap-3">
+                                    <select
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        value={item.itemType}
+                                        onChange={(e) => handleItemChange(index, 'itemType', e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select Item Type</option>
+                                        {itemTypes.map(type => (
+                                            <option key={type} value={type}>{type}</option>
+                                        ))}
+                                    </select>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        value={item.quantity}
+                                        onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                                        required
+                                    />
+                                    {newRequest.clothes.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveRow(index)}
+                                            className="px-2 text-red-500 hover:text-red-700"
+                                        >
+                                            ×
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleAddRow}
+                            className="text-sm font-medium text-primary hover:text-indigo-700"
+                        >
+                            + Add Another Item
+                        </button>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                Special Instructions (Optional)
+                            </label>
+                            <textarea
+                                placeholder="Any special instructions for washing..."
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                rows="3"
+                                value={newRequest.specialInstructions}
+                                onChange={(e) => setNewRequest({ ...newRequest, specialInstructions: e.target.value })}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            className="w-full py-3 font-medium text-white transition rounded-lg bg-primary hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {submitting ? 'Submitting...' : 'Submit Request'}
+                        </button>
+                    </form>
+                </div>
+
+                {/* Recent Requests */}
+                <div className="p-6 bg-white shadow-lg rounded-xl card-hover">
+                    <h2 className="mb-6 text-xl font-semibold text-gray-800">Your Requests</h2>
+                    {loading ? (
+                        <div className="py-8 text-center">
+                            <div className="inline-block w-8 h-8 border-b-2 rounded-full animate-spin border-primary"></div>
+                            <p className="mt-2 text-gray-500">Loading...</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                            {laundry.length === 0 ? (
+                                <div className="py-8 text-center">
+                                    <p className="text-gray-500">No requests yet. Create your first request!</p>
+                                </div>
+                            ) : (
+                                laundry.map((req) => (
+                                    <Link
+                                        key={req._id}
+                                        to={`/laundry/${req._id}`}
+                                        className="block p-4 transition border border-gray-200 rounded-lg cursor-pointer hover:shadow-md"
+                                    >
+                                        <div className="flex items-start justify-between mb-2">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(req.status)}`}>
+                                                {req.status.replace('_', ' ').toUpperCase()}
+                                            </span>
+                                            <span className="text-sm text-gray-500">
+                                                {new Date(req.createdAt).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <div className="mt-3">
+                                            <p className="mb-2 text-sm font-medium text-gray-700">Items:</p>
+                                            <ul className="space-y-1">
+                                                {req.clothes.map((c, i) => (
+                                                    <li key={i} className="text-sm text-gray-600">
+                                                        • {c.quantity}x {c.itemType}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        {req.specialInstructions && (
+                                            <p className="mt-2 text-xs italic text-gray-500">
+                                                Note: {req.specialInstructions}
+                                            </p>
+                                        )}
+                                    </Link>
+                                ))
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Dashboard;
