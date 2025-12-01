@@ -90,12 +90,16 @@ WashEase/
 │   └── package.json
 ├── server/                 # Express backend
 │   ├── config/            # Database configuration
-│   ├── controllers/      # Route controllers
-│   ├── middleware/       # Auth middleware
-│   ├── models/           # Mongoose models
-│   ├── routes/           # API routes
-│   └── server.js         # Entry point
-└── README.md
+│   ├── controllers/       # Route controllers
+│   │   └── README.md     # 📚 Controllers documentation
+│   ├── middleware/        # Auth middleware
+│   ├── models/            # Mongoose models
+│   ├── routes/            # API routes
+│   └── server.js          # Entry point
+├── README.md              # Main documentation
+├── START.md               # Quick start guide
+├── GIT_SETUP.md          # Git push instructions
+└── .gitignore            # Git ignore rules
 ```
 
 ## 🔐 User Roles
@@ -115,6 +119,8 @@ WashEase/
 - `GET /api/laundry` - Get user's laundry requests
 - `GET /api/laundry/all` - Get all requests (Admin/Washer)
 - `PUT /api/laundry/:id` - Update laundry status (Admin/Washer)
+
+> 📚 **Detailed API Documentation:** See [`server/controllers/README.md`](server/controllers/README.md) for complete controller documentation with request/response examples, error codes, and testing examples.
 
 ## 🗄️ Database Collections
 
