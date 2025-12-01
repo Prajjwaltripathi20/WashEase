@@ -8,6 +8,17 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     try {
+      // Check for employee token first
+      const employeeInfoStr = localStorage.getItem('employeeInfo');
+      if (employeeInfoStr) {
+        const employeeInfo = JSON.parse(employeeInfoStr);
+        if (employeeInfo && employeeInfo.token) {
+          config.headers.Authorization = `Bearer ${employeeInfo.token}`;
+          return config;
+        }
+      }
+      
+      // Fallback to user token
       const userInfoStr = localStorage.getItem('userInfo');
       if (userInfoStr) {
         const userInfo = JSON.parse(userInfoStr);
@@ -16,7 +27,7 @@ api.interceptors.request.use(
         }
       }
     } catch (error) {
-      console.error('Error parsing userInfo from localStorage:', error);
+      console.error('Error parsing token from localStorage:', error);
     }
     return config;
   },
@@ -30,8 +41,14 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('userInfo');
-      window.location.href = '/login';
+      // Check if it's an employee route
+      if (window.location.pathname.startsWith('/employee')) {
+        localStorage.removeItem('employeeInfo');
+        window.location.href = '/employee/login';
+      } else {
+        localStorage.removeItem('userInfo');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

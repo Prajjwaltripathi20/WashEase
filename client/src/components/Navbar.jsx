@@ -1,9 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Don't show navbar on employee pages
+    if (location.pathname.startsWith('/employee')) {
+        return null;
+    }
 
     const handleLogout = () => {
         logout();

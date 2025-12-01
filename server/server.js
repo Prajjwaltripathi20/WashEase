@@ -4,6 +4,7 @@ const cors = require('cors');
 const { connectDB, checkConnection } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const laundryRoutes = require('./routes/laundryRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/laundry', laundryRoutes);
+app.use('/api/employee', employeeRoutes);
 
 // Health check route
 app.get('/', (req, res) => {
