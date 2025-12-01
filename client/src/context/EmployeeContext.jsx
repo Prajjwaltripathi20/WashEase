@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 
 const EmployeeContext = createContext();
 
@@ -27,14 +27,14 @@ export const EmployeeProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('/api/employee/login', { email, password });
+            const { data } = await api.post('/employee/login', { email, password });
             setEmployee(data);
             localStorage.setItem('employeeInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
             let message = 'Login failed. Please check your credentials.';
             if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-                message = 'Cannot connect to server. Please make sure the backend server is running on port 5001.';
+                message = 'Cannot connect to server. Please make sure the backend is reachable.';
             } else if (error.response?.status === 503) {
                 message = 'Database not connected. Please check server configuration.';
             } else {

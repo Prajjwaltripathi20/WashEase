@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 
 const AuthContext = createContext();
 
@@ -27,14 +27,14 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('/api/auth/login', { email, password });
+            const { data } = await api.post('/auth/login', { email, password });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
             let message = 'Login failed. Please check your credentials.';
             if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-                message = 'Cannot connect to server. Please make sure the backend server is running on port 5001.';
+                message = 'Cannot connect to server. Please make sure the backend is reachable.';
             } else if (error.response?.status === 503) {
                 message = 'Database not connected. Please check server configuration.';
             } else {
@@ -46,14 +46,14 @@ export const AuthProvider = ({ children }) => {
 
     const signup = async (userData) => {
         try {
-            const { data } = await axios.post('/api/auth/signup', userData);
+            const { data } = await api.post('/auth/signup', userData);
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
             let message = 'Signup failed. Please try again.';
             if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-                message = 'Cannot connect to server. Please make sure the backend server is running on port 5001.';
+                message = 'Cannot connect to server. Please make sure the backend is reachable.';
             } else if (error.response?.status === 503) {
                 message = 'Database not connected. Please check server configuration.';
             } else {
