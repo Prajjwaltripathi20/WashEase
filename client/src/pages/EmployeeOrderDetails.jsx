@@ -85,7 +85,7 @@ const EmployeeOrderDetails = () => {
             'accepted': 'bg-blue-100 text-blue-800',
             'rejected': 'bg-red-100 text-red-800',
             'picked_up': 'bg-purple-100 text-purple-800',
-            'in_process': 'bg-indigo-100 text-indigo-800',
+            'in_progress': 'bg-indigo-100 text-indigo-800',
             'washed': 'bg-cyan-100 text-cyan-800',
             'ironed': 'bg-pink-100 text-pink-800',
             'ready': 'bg-green-100 text-green-800',
@@ -97,8 +97,8 @@ const EmployeeOrderDetails = () => {
     const getNextStatus = (currentStatus) => {
         const flow = {
             'accepted': 'picked_up',
-            'picked_up': 'in_process',
-            'in_process': 'washed',
+            'picked_up': 'in_progress',
+            'in_progress': 'washed',
             'washed': 'ironed',
             'ironed': 'ready',
             'ready': 'delivered'
@@ -108,7 +108,7 @@ const EmployeeOrderDetails = () => {
 
     const statusButtons = [
         { status: 'picked_up', label: 'Mark as Picked Up', icon: '📦' },
-        { status: 'in_process', label: 'Start Processing', icon: '🔄' },
+        { status: 'in_progress', label: 'Start Processing', icon: '🔄' },
         { status: 'washed', label: 'Mark as Washed', icon: '🧼' },
         { status: 'ironed', label: 'Mark as Ironed', icon: '👔' },
         { status: 'ready', label: 'Mark as Ready', icon: '✅' },
