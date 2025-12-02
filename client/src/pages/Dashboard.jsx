@@ -66,7 +66,7 @@ const Dashboard = () => {
         setError('');
         setSuccess('');
         setSubmitting(true);
-        
+
         try {
             await api.post('/api/laundry', newRequest);
             setSuccess('Laundry request submitted successfully!');
@@ -101,32 +101,32 @@ const Dashboard = () => {
     return (
         <div className="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8 fade-in">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-                <p className="mt-2 text-gray-600">Manage your laundry requests</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">Manage your laundry requests</p>
             </div>
 
             {error && (
-                <div className="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
+                <div className="relative px-4 py-3 mb-4 text-red-700 bg-red-100 dark:bg-red-900/30 dark:text-red-300 border border-red-400 dark:border-red-800 rounded">
                     {error}
                 </div>
             )}
 
             {success && (
-                <div className="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
+                <div className="relative px-4 py-3 mb-4 text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-300 border border-green-400 dark:border-green-800 rounded">
                     {success}
                 </div>
             )}
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 {/* New Request Form */}
-                <div className="p-6 bg-white shadow-lg rounded-xl card-hover">
-                    <h2 className="mb-6 text-xl font-semibold text-gray-800">New Laundry Request</h2>
+                <div className="p-6 bg-white dark:bg-[#1A1F2E] shadow-lg dark:shadow-premium-card rounded-xl card-hover border border-gray-100 dark:border-white/5">
+                    <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-white">New Laundry Request</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-3">
                             {newRequest.clothes.map((item, index) => (
                                 <div key={index} className="flex items-center gap-3">
                                     <select
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="flex-1 px-3 py-2 bg-white dark:bg-[#0D0F12] border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-accent-blue focus:border-transparent text-gray-900 dark:text-white"
                                         value={item.itemType}
                                         onChange={(e) => handleItemChange(index, 'itemType', e.target.value)}
                                         required
@@ -139,7 +139,7 @@ const Dashboard = () => {
                                     <input
                                         type="number"
                                         min="1"
-                                        className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="w-24 px-3 py-2 bg-white dark:bg-[#0D0F12] border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-accent-blue focus:border-transparent text-gray-900 dark:text-white"
                                         value={item.quantity}
                                         onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
                                         required
@@ -148,7 +148,7 @@ const Dashboard = () => {
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveRow(index)}
-                                            className="px-2 text-red-500 hover:text-red-700"
+                                            className="px-2 text-red-500 hover:text-red-700 dark:hover:text-red-400"
                                         >
                                             ×
                                         </button>
@@ -159,17 +159,17 @@ const Dashboard = () => {
                         <button
                             type="button"
                             onClick={handleAddRow}
-                            className="text-sm font-medium text-primary hover:text-indigo-700"
+                            className="text-sm font-medium text-blue-600 dark:text-accent-blue hover:text-indigo-700 dark:hover:text-blue-400"
                         >
                             + Add Another Item
                         </button>
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                            <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Special Instructions (Optional)
                             </label>
                             <textarea
                                 placeholder="Any special instructions for washing..."
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full px-3 py-2 bg-white dark:bg-[#0D0F12] border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-accent-blue focus:border-transparent text-gray-900 dark:text-white"
                                 rows="3"
                                 value={newRequest.specialInstructions}
                                 onChange={(e) => setNewRequest({ ...newRequest, specialInstructions: e.target.value })}
@@ -178,7 +178,7 @@ const Dashboard = () => {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="w-full py-3 font-medium text-white transition rounded-lg bg-primary hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-3 font-medium text-white transition rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {submitting ? 'Submitting...' : 'Submit Request'}
                         </button>
@@ -186,46 +186,46 @@ const Dashboard = () => {
                 </div>
 
                 {/* Recent Requests */}
-                <div className="p-6 bg-white shadow-lg rounded-xl card-hover">
-                    <h2 className="mb-6 text-xl font-semibold text-gray-800">Your Requests</h2>
+                <div className="p-6 bg-white dark:bg-[#1A1F2E] shadow-lg dark:shadow-premium-card rounded-xl card-hover border border-gray-100 dark:border-white/5">
+                    <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-white">Your Requests</h2>
                     {loading ? (
                         <div className="py-8 text-center">
-                            <div className="inline-block w-8 h-8 border-b-2 rounded-full animate-spin border-primary"></div>
-                            <p className="mt-2 text-gray-500">Loading...</p>
+                            <div className="inline-block w-8 h-8 border-b-2 rounded-full animate-spin border-blue-600 dark:border-accent-blue"></div>
+                            <p className="mt-2 text-gray-500 dark:text-gray-400">Loading...</p>
                         </div>
                     ) : (
-                        <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                        <div className="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar">
                             {laundry.length === 0 ? (
                                 <div className="py-8 text-center">
-                                    <p className="text-gray-500">No requests yet. Create your first request!</p>
+                                    <p className="text-gray-500 dark:text-gray-400">No requests yet. Create your first request!</p>
                                 </div>
                             ) : (
                                 laundry.map((req) => (
                                     <Link
                                         key={req._id}
                                         to={`/laundry/${req._id}`}
-                                        className="block p-4 transition border border-gray-200 rounded-lg cursor-pointer hover:shadow-md"
+                                        className="block p-4 transition border border-gray-200 dark:border-white/10 rounded-lg cursor-pointer hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/50 bg-gray-50 dark:bg-[#0D0F12]"
                                     >
                                         <div className="flex items-start justify-between mb-2">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(req.status)}`}>
                                                 {req.status.replace('_', ' ').toUpperCase()}
                                             </span>
-                                            <span className="text-sm text-gray-500">
+                                            <span className="text-sm text-gray-500 dark:text-gray-400">
                                                 {new Date(req.createdAt).toLocaleDateString()}
                                             </span>
                                         </div>
                                         <div className="mt-3">
-                                            <p className="mb-2 text-sm font-medium text-gray-700">Items:</p>
+                                            <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Items:</p>
                                             <ul className="space-y-1">
                                                 {req.clothes.map((c, i) => (
-                                                    <li key={i} className="text-sm text-gray-600">
+                                                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400">
                                                         • {c.quantity}x {c.itemType}
                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
                                         {req.specialInstructions && (
-                                            <p className="mt-2 text-xs italic text-gray-500">
+                                            <p className="mt-2 text-xs italic text-gray-500 dark:text-gray-500">
                                                 Note: {req.specialInstructions}
                                             </p>
                                         )}

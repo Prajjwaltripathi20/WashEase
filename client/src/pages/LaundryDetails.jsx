@@ -116,31 +116,31 @@ const LaundryDetails = () => {
             <div className="mb-6">
                 <Link
                     to="/dashboard"
-                    className="text-primary hover:text-indigo-700 mb-4 inline-block"
+                    className="text-blue-600 dark:text-accent-blue hover:text-indigo-700 dark:hover:text-blue-400 mb-4 inline-block"
                 >
                     ← Back to Dashboard
                 </Link>
-                <h1 className="text-3xl font-bold text-gray-900 mt-4">Laundry Request Details</h1>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">Laundry Request Details</h1>
             </div>
 
-            <div className="p-8 bg-white rounded-xl shadow-lg card-hover">
+            <div className="p-8 bg-white dark:bg-[#1A1F2E] rounded-xl shadow-lg dark:shadow-premium-card card-hover border border-gray-100 dark:border-white/5">
                 <div className="space-y-6">
                     {/* Status */}
-                    <div className="flex items-center justify-between pb-4 border-b">
+                    <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-white/10">
                         <div>
-                            <p className="text-sm text-gray-500 mb-1">Status</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Status</p>
                             <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(laundry.status)}`}>
                                 {laundry.status.replace('_', ' ').toUpperCase()}
                             </span>
                         </div>
                         {(user?.role === 'admin' || user?.role === 'washer') && (
                             <div>
-                                <p className="text-sm text-gray-500 mb-2">Update Status</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Update Status</p>
                                 <select
                                     value={laundry.status}
                                     onChange={(e) => handleStatusUpdate(e.target.value)}
                                     disabled={updating}
-                                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                                    className="border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-accent-blue bg-white dark:bg-[#0D0F12] text-gray-900 dark:text-white disabled:opacity-50"
                                 >
                                     {statusOptions.map(option => (
                                         <option key={option.value} value={option.value}>
@@ -154,11 +154,11 @@ const LaundryDetails = () => {
 
                     {/* User Info (for admin/washer) */}
                     {(user?.role === 'admin' || user?.role === 'washer') && laundry.user && (
-                        <div className="pb-4 border-b">
-                            <p className="text-sm text-gray-500 mb-1">Customer</p>
-                            <p className="text-lg font-medium text-gray-900">{laundry.user.name}</p>
+                        <div className="pb-4 border-b border-gray-200 dark:border-white/10">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Customer</p>
+                            <p className="text-lg font-medium text-gray-900 dark:text-white">{laundry.user.name}</p>
                             {laundry.user.hostelBlock && (
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
                                     {laundry.user.hostelBlock} - Room {laundry.user.roomNumber}
                                 </p>
                             )}
@@ -167,18 +167,18 @@ const LaundryDetails = () => {
 
                     {/* Items */}
                     <div>
-                        <p className="text-sm text-gray-500 mb-3">Items</p>
-                        <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Items</p>
+                        <div className="bg-gray-50 dark:bg-[#0D0F12] rounded-lg p-4 border border-gray-100 dark:border-white/5">
                             <ul className="space-y-2">
                                 {laundry.clothes.map((item, index) => (
                                     <li key={index} className="flex justify-between items-center">
-                                        <span className="text-gray-900 font-medium">{item.itemType}</span>
-                                        <span className="text-gray-600">Quantity: {item.quantity}</span>
+                                        <span className="text-gray-900 dark:text-white font-medium">{item.itemType}</span>
+                                        <span className="text-gray-600 dark:text-gray-400">Quantity: {item.quantity}</span>
                                     </li>
                                 ))}
                             </ul>
-                            <div className="mt-4 pt-4 border-t border-gray-200">
-                                <p className="text-sm font-medium text-gray-900">
+                            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
                                     Total Items: {laundry.clothes.reduce((sum, item) => sum + item.quantity, 0)}
                                 </p>
                             </div>
@@ -188,33 +188,33 @@ const LaundryDetails = () => {
                     {/* Special Instructions */}
                     {laundry.specialInstructions && (
                         <div>
-                            <p className="text-sm text-gray-500 mb-2">Special Instructions</p>
-                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                                <p className="text-gray-800">{laundry.specialInstructions}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Special Instructions</p>
+                            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-lg p-4">
+                                <p className="text-gray-800 dark:text-yellow-200">{laundry.specialInstructions}</p>
                             </div>
                         </div>
                     )}
 
                     {/* Dates */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-white/10">
                         <div>
-                            <p className="text-sm text-gray-500 mb-1">Request Date</p>
-                            <p className="text-gray-900">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Request Date</p>
+                            <p className="text-gray-900 dark:text-white">
                                 {new Date(laundry.createdAt).toLocaleString()}
                             </p>
                         </div>
                         {laundry.pickupDate && (
                             <div>
-                                <p className="text-sm text-gray-500 mb-1">Pickup Date</p>
-                                <p className="text-gray-900">
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Pickup Date</p>
+                                <p className="text-gray-900 dark:text-white">
                                     {new Date(laundry.pickupDate).toLocaleString()}
                                 </p>
                             </div>
                         )}
                         {laundry.deliveryDate && (
                             <div>
-                                <p className="text-sm text-gray-500 mb-1">Delivery Date</p>
-                                <p className="text-gray-900">
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Delivery Date</p>
+                                <p className="text-gray-900 dark:text-white">
                                     {new Date(laundry.deliveryDate).toLocaleString()}
                                 </p>
                             </div>

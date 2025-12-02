@@ -51,7 +51,7 @@ const Features = () => {
   };
 
   return (
-    <section id="features" className="py-20 bg-white dark:bg-slate-950 transition-colors duration-300">
+    <section id="features" className="py-20 bg-white dark:bg-[#0B0F17] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -87,9 +87,9 @@ const Features = () => {
                 whileHover={{ scale: 1.02, y: -5 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="h-full bg-gray-50 dark:bg-slate-900 rounded-2xl p-8 border border-gray-200 dark:border-slate-800 transition-all duration-300 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800">
+                <div className="h-full bg-gray-50 dark:bg-[#10141C] rounded-2xl p-8 border border-gray-200 dark:border-white/5 transition-all duration-300 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-500/30 dark:hover:shadow-glow-blue">
                   {/* Icon Container */}
-                  <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
 

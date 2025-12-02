@@ -78,65 +78,66 @@ const EmployeeRoute = ({ children }) => {
 function AppContent() {
   const location = useLocation();
   const isEmployeeRoute = location.pathname.startsWith('/employee');
-  
+  const isSaaSRoute = location.pathname === '/saas';
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100">
-      {!isEmployeeRoute && <Navbar />}
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100 dark:from-[#0B0F17] dark:to-[#10141C] transition-colors duration-300">
+      {!isEmployeeRoute && !isSaaSRoute && <Navbar />}
       <Routes>
         <Route path="/saas" element={<SaaSLanding />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/laundry/:id"
-                element={
-                  <PrivateRoute>
-                    <LaundryDetails />
-                  </PrivateRoute>
-                }
-              />
-              {/* Employee Routes */}
-              <Route path="/employee/login" element={<EmployeeLogin />} />
-              <Route
-                path="/employee/dashboard"
-                element={
-                  <EmployeeRoute>
-                    <EmployeeDashboard />
-                  </EmployeeRoute>
-                }
-              />
-              <Route
-                path="/employee/orders/:id"
-                element={
-                  <EmployeeRoute>
-                    <EmployeeOrderDetails />
-                  </EmployeeRoute>
-                }
-              />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/laundry/:id"
+          element={
+            <PrivateRoute>
+              <LaundryDetails />
+            </PrivateRoute>
+          }
+        />
+        {/* Employee Routes */}
+        <Route path="/employee/login" element={<EmployeeLogin />} />
+        <Route
+          path="/employee/dashboard"
+          element={
+            <EmployeeRoute>
+              <EmployeeDashboard />
+            </EmployeeRoute>
+          }
+        />
+        <Route
+          path="/employee/orders/:id"
+          element={
+            <EmployeeRoute>
+              <EmployeeOrderDetails />
+            </EmployeeRoute>
+          }
+        />
       </Routes>
     </div>
   );

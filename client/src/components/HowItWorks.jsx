@@ -51,7 +51,7 @@ const HowItWorks = () => {
   };
 
   return (
-    <section id="how-it-works" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-950 transition-colors duration-300">
+    <section id="how-it-works" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-[#0B0F17] dark:to-[#10141C] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -87,20 +87,20 @@ const HowItWorks = () => {
               >
                 {/* Connector Line */}
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-16 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-transparent"></div>
+                  <div className="hidden lg:block absolute top-16 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-transparent opacity-50"></div>
                 )}
 
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 h-full hover:shadow-lg transition-all duration-300">
+                <div className="bg-white dark:bg-[#1A1F2E] rounded-2xl p-8 border border-gray-200 dark:border-white/5 h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   {/* Step Number */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20">
                       <span className="text-white font-bold text-lg">{step.number}</span>
                     </div>
                   </div>
 
                   {/* Icon */}
                   <div className="mb-6">
-                    <Icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                    <Icon className="w-8 h-8 text-blue-600 dark:text-accent-blue" />
                   </div>
 
                   {/* Title */}
