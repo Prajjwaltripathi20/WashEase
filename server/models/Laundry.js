@@ -18,7 +18,7 @@ const laundrySchema = mongoose.Schema({
     ],
     status: {
         type: String,
-        enum: ['pending', 'accepted', 'rejected', 'picked_up', 'in_process', 'washed', 'ironed', 'ready', 'delivered'],
+        enum: ['pending', 'accepted', 'rejected', 'picked_up', 'in_progress', 'washed', 'ironed', 'ready', 'delivered'],
         default: 'pending'
     },
     rejectionReason: { type: String }, // If rejected
