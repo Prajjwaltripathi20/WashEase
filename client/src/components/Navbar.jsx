@@ -47,6 +47,13 @@ const Navbar = () => {
                             )}
                         </button>
 
+                        <Link
+                            to="/"
+                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors font-medium"
+                        >
+                            Home
+                        </Link>
+
                         {user ? (
                             <>
                                 <span className="hidden text-gray-600 dark:text-gray-300 sm:inline font-medium">Hello, {user.name}</span>

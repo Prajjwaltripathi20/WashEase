@@ -80,11 +80,12 @@ const Hero = ({ onGetStarted }) => {
               >
                 Get Started Free
               </button>
-              <button
+              <a
+                href="#features"
                 className="px-8 py-4 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl font-semibold hover:bg-gray-50 dark:hover:bg-white/5 hover:border-gray-300 dark:hover:border-white/20 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm shadow-soft-dark"
               >
                 Learn More <ArrowRight className="w-5 h-5" />
-              </button>
+              </a>
             </motion.div>
 
             {/* Stats Row */}

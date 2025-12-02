@@ -20,6 +20,12 @@ const EmployeeNavbar = () => {
                     <div className="flex items-center space-x-4">
                         <span className="hidden text-gray-700 dark:text-gray-300 sm:inline">Hello, {employee?.name}</span>
                         <Link
+                            to="/"
+                            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors"
+                        >
+                            Home
+                        </Link>
+                        <Link
                             to="/employee/dashboard"
                             className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors"
                         >

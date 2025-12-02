@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
@@ -6,7 +6,12 @@ import HowItWorks from '../components/HowItWorks';
 
 const Home = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const isAdmin = user && (user.role === 'admin' || user.role === 'washer');
+
+    const handleGetStarted = () => {
+        navigate('/signup');
+    };
 
     const quickLinks = [
         {
@@ -92,7 +97,7 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-white dark:bg-[#0B0F17] transition-colors duration-300">
             {/* Hero Section */}
-            <Hero onGetStarted={() => { }} />
+            <Hero onGetStarted={handleGetStarted} />
 
             {/* Quick Access Section */}
             <div className="py-16 bg-gray-50 dark:bg-[#10141C] transition-colors duration-300">

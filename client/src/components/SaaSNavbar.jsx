@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 
@@ -20,6 +21,13 @@ const Navbar = ({ onAuthClick }) => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
+            <Link
+              to="/"
+              className="relative group py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors"
+            >
+              Home
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-blue shadow-[0_0_10px_rgba(59,130,246,0.8)] group-hover:w-full transition-all duration-300 ease-out"></span>
+            </Link>
             {['Features', 'How It Works', 'Pricing'].map((item) => (
               <a
                 key={item}
@@ -78,6 +86,12 @@ const Navbar = ({ onAuthClick }) => {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden pb-4 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300 bg-white dark:bg-[#0D0F12] border-t border-gray-100 dark:border-white/5">
+            <Link
+              to="/"
+              className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg"
+            >
+              Home
+            </Link>
             {['Features', 'How It Works', 'Pricing'].map((item) => (
               <a
                 key={item}
