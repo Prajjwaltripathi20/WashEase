@@ -4,7 +4,11 @@ const rawBase = import.meta.env.VITE_API_BASE_URL;
 
 const normalizeBase = (b) => {
   if (!b) return '/api';
+  // Remove trailing slashes
   const trimmed = b.replace(/\/+$/g, '');
+  // If it's a full URL (http/https), don't add /api - backend already has it
+  if (trimmed.includes('://')) return trimmed;
+  // For relative paths, add /api if not already present
   if (trimmed.endsWith('/api')) return trimmed;
   return `${trimmed}/api`;
 };
