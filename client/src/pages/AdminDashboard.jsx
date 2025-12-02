@@ -14,7 +14,7 @@ const AdminDashboard = () => {
         try {
             setLoading(true);
             setError('');
-            const { data } = await api.get('/api/laundry/all');
+            const { data } = await api.get('/laundry/all');
             setLaundry(data);
         } catch (error) {
             console.error(error);

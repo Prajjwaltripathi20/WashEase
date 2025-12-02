@@ -19,7 +19,7 @@ const Dashboard = () => {
         try {
             setLoading(true);
             setError('');
-            const { data } = await api.get('/api/laundry');
+            const { data } = await api.get('/laundry');
             setLaundry(data);
         } catch (error) {
             console.error(error);

@@ -27,7 +27,7 @@ export const EmployeeProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await api.post('/api/employee/login', { email, password });
+            const { data } = await api.post('/employee/login', { email, password });
             setEmployee(data);
             localStorage.setItem('employeeInfo', JSON.stringify(data));
             return { success: true };
