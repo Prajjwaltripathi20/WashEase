@@ -148,7 +148,7 @@ const EmployeeOrderDetails = () => {
 
     const isAssigned = order.assignedTo && order.assignedTo._id === employee?._id;
     const nextStatus = getNextStatus(order.status);
-    const canUpdateStatus = isAssigned && ['accepted', 'picked_up', 'in_process', 'washed', 'ironed', 'ready'].includes(order.status);
+    const canUpdateStatus = isAssigned && ['accepted', 'picked_up', 'in_progress', 'washed', 'ironed', 'ready'].includes(order.status);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 dark:from-[#0B0F17] dark:to-[#10141C] transition-colors duration-300">

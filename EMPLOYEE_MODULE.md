@@ -154,14 +154,14 @@ accepted → picked_up → in_process → washed → ironed → ready → delive
 
 The order status follows a strict progression:
 
-1. **pending** - Order created, awaiting employee acceptance
-2. **accepted** - Employee accepted the order
-3. **picked_up** - Items collected from customer
-4. **in_process** - Currently being processed
-5. **washed** - Washing completed
-6. **ironed** - Ironing completed
-7. **ready** - Ready for delivery
-8. **delivered** - Successfully delivered
+1.  **pending** - Order created, awaiting employee acceptance
+2.  **accepted** - Employee accepted the order
+3.  **picked_up** - Items collected from customer
+4.- `in_progress`: Laundry is being washed/processed
+5.  **washed** - Washing completed
+6.  **ironed** - Ironing completed
+7.  **ready** - Ready for delivery
+8.  **delivered** - Successfully delivered
 
 **Special Status:**
 - **rejected** - Order rejected by employee (with reason)

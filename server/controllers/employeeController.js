@@ -99,7 +99,7 @@ const acceptOrder = async (req, res) => {
 
         order.assignedTo = req.user._id;
         order.status = 'accepted';
-        
+
         // Add to activity log
         order.activityLog.push({
             status: 'accepted',
@@ -143,7 +143,7 @@ const rejectOrder = async (req, res) => {
 
         order.status = 'rejected';
         order.rejectionReason = reason || 'No reason provided';
-        
+
         // Add to activity log
         order.activityLog.push({
             status: 'rejected',
@@ -175,7 +175,7 @@ const updateOrderStatus = async (req, res) => {
         }
 
         const { status, notes } = req.body;
-        const validStatuses = ['picked_up', 'in_process', 'washed', 'ironed', 'ready', 'delivered'];
+        const validStatuses = ['picked_up', 'in_progress', 'washed', 'ironed', 'ready', 'delivered'];
 
         if (!status) {
             return res.status(400).json({ message: 'Status is required' });
@@ -199,16 +199,16 @@ const updateOrderStatus = async (req, res) => {
         // Validate status progression
         const statusFlow = {
             'accepted': ['picked_up'],
-            'picked_up': ['in_process'],
-            'in_process': ['washed'],
+            'picked_up': ['in_progress'],
+            'in_progress': ['washed'],
             'washed': ['ironed'],
             'ironed': ['ready'],
             'ready': ['delivered']
         };
 
         if (statusFlow[order.status] && !statusFlow[order.status].includes(status)) {
-            return res.status(400).json({ 
-                message: `Cannot change status from ${order.status} to ${status}. Valid next status: ${statusFlow[order.status].join(', ')}` 
+            return res.status(400).json({
+                message: `Cannot change status from ${order.status} to ${status}. Valid next status: ${statusFlow[order.status].join(', ')}`
             });
         }
 

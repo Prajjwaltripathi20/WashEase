@@ -39,7 +39,7 @@ const EmployeeDashboard = () => {
             'accepted': 'bg-blue-100 text-blue-800',
             'rejected': 'bg-red-100 text-red-800',
             'picked_up': 'bg-purple-100 text-purple-800',
-            'in_process': 'bg-indigo-100 text-indigo-800',
+            'in_progress': 'bg-indigo-100 text-indigo-800',
             'washed': 'bg-cyan-100 text-cyan-800',
             'ironed': 'bg-pink-100 text-pink-800',
             'ready': 'bg-green-100 text-green-800',
@@ -58,7 +58,7 @@ const EmployeeDashboard = () => {
         total: orders.length,
         pending: orders.filter(o => o.status === 'pending').length,
         assigned: orders.filter(o => o.assignedTo && o.assignedTo._id === employee?._id).length,
-        inProgress: orders.filter(o => ['accepted', 'picked_up', 'in_process', 'washed', 'ironed'].includes(o.status)).length,
+        inProgress: orders.filter(o => ['accepted', 'picked_up', 'in_progress', 'washed', 'ironed'].includes(o.status)).length,
         ready: orders.filter(o => o.status === 'ready').length,
         delivered: orders.filter(o => o.status === 'delivered').length
     };
@@ -113,8 +113,8 @@ const EmployeeDashboard = () => {
                         <button
                             onClick={() => setFilter('all')}
                             className={`px-4 py-2 rounded-lg transition ${filter === 'all'
-                                    ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
-                                    : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
+                                ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
+                                : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
                                 }`}
                         >
                             All
@@ -122,8 +122,8 @@ const EmployeeDashboard = () => {
                         <button
                             onClick={() => setFilter('pending')}
                             className={`px-4 py-2 rounded-lg transition ${filter === 'pending'
-                                    ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
-                                    : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
+                                ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
+                                : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
                                 }`}
                         >
                             Pending
@@ -131,8 +131,8 @@ const EmployeeDashboard = () => {
                         <button
                             onClick={() => setFilter('assigned')}
                             className={`px-4 py-2 rounded-lg transition ${filter === 'assigned'
-                                    ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
-                                    : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
+                                ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
+                                : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
                                 }`}
                         >
                             My Orders
@@ -140,8 +140,8 @@ const EmployeeDashboard = () => {
                         <button
                             onClick={() => setFilter('ready')}
                             className={`px-4 py-2 rounded-lg transition ${filter === 'ready'
-                                    ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
-                                    : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
+                                ? 'bg-blue-600 dark:bg-accent-blue text-white shadow-lg shadow-blue-500/30'
+                                : 'bg-gray-100 dark:bg-[#0D0F12] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/5'
                                 }`}
                         >
                             Ready
