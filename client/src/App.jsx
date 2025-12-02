@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { EmployeeProvider, useEmployee } from './context/EmployeeContext';
+import { ThemeProvider } from './components/ThemeProvider';
 import Navbar from './components/Navbar';
 import EmployeeNavbar from './components/EmployeeNavbar';
 import Home from './pages/Home';
@@ -13,6 +14,7 @@ import LaundryDetails from './pages/LaundryDetails';
 import EmployeeLogin from './pages/EmployeeLogin';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import EmployeeOrderDetails from './pages/EmployeeOrderDetails';
+import SaaSLanding from './components/SaaSLanding';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -81,6 +83,7 @@ function AppContent() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-slate-100">
       {!isEmployeeRoute && <Navbar />}
       <Routes>
+        <Route path="/saas" element={<SaaSLanding />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -141,13 +144,15 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <EmployeeProvider>
-          <AppContent />
-        </EmployeeProvider>
-      </AuthProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AuthProvider>
+          <EmployeeProvider>
+            <AppContent />
+          </EmployeeProvider>
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 
