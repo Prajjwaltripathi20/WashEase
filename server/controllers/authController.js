@@ -88,4 +88,46 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateUserProfile = async (req, res) => {
+    try {
+        const { checkConnection } = require('../config/db');
+        if (!checkConnection()) {
+            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+        }
+
+        const user = await User.findById(req.user._id);
+
+        if (user) {
+            user.name = req.body.name || user.name;
+            user.hostelBlock = req.body.hostelBlock || user.hostelBlock;
+            user.roomNumber = req.body.roomNumber || user.roomNumber;
+            // Role and Email are not updatable by user for security/consistency
+
+            if (req.body.password) {
+                user.password = req.body.password;
+            }
+
+            const updatedUser = await user.save();
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                hostelBlock: updatedUser.hostelBlock,
+                roomNumber: updatedUser.roomNumber,
+                token: generateToken(updatedUser._id),
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error in updateUserProfile:', error);
+        res.status(500).json({ message: error.message || 'Server error' });
+    }
+};
+
+module.exports = { registerUser, loginUser, updateUserProfile };

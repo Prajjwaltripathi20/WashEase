@@ -63,13 +63,32 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async (userData) => {
+        try {
+            const { data } = await api.put('/auth/profile', userData);
+            setUser(data);
+            localStorage.setItem('userInfo', JSON.stringify(data));
+            return { success: true };
+        } catch (error) {
+            let message = 'Profile update failed. Please try again.';
+            if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+                message = 'Cannot connect to server. Please make sure the backend is reachable.';
+            } else if (error.response?.status === 503) {
+                message = 'Database not connected. Please check server configuration.';
+            } else {
+                message = error.response?.data?.message || error.message || message;
+            }
+            return { success: false, message };
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('userInfo');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, signup, logout, updateProfile, loading }}>
             {children}
         </AuthContext.Provider>
     );

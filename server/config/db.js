@@ -6,8 +6,6 @@ const mongoose = require("mongoose");
  * This avoids opening many connections on cold starts.
  */
 const DEFAULT_OPTIONS = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   // increase timeouts slightly to reduce 'secureConnect timed out' errors
   connectTimeoutMS: 30000,
   socketTimeoutMS: 45000,
@@ -82,7 +80,8 @@ async function connectDB({ retry = true } = {}) {
 
 function checkConnection() {
   // readyState === 1 is connected
-  return cached.conn && mongoose.connection.readyState === 1;
+  // Don't rely on cached.conn, just check the actual mongoose connection state
+  return mongoose.connection.readyState === 1;
 }
 
 // Optional helper to gracefully close (useful for local dev)
