@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const Laundry = require('../models/Laundry');
 const jwt = require('jsonwebtoken');
-const { checkConnection } = require('../config/db');
+const { checkConnection, connectDB } = require('../config/db');
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -13,7 +13,10 @@ const generateToken = (id) => {
 const employeeLogin = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { email, password } = req.body;
@@ -51,7 +54,10 @@ const employeeLogin = async (req, res) => {
 const getAssignedOrders = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const employeeId = req.user._id;
@@ -80,7 +86,10 @@ const getAssignedOrders = async (req, res) => {
 const acceptOrder = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const order = await Laundry.findById(req.params.id);
@@ -127,7 +136,10 @@ const acceptOrder = async (req, res) => {
 const rejectOrder = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { reason } = req.body;
@@ -171,7 +183,10 @@ const rejectOrder = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { status, notes } = req.body;
@@ -250,7 +265,10 @@ const updateOrderStatus = async (req, res) => {
 const getOrderDetails = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const order = await Laundry.findById(req.params.id)

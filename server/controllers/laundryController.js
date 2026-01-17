@@ -1,5 +1,5 @@
 const Laundry = require('../models/Laundry');
-const { checkConnection } = require('../config/db');
+const { checkConnection, connectDB } = require('../config/db');
 
 // @desc    Create new laundry request
 // @route   POST /api/laundry
@@ -7,7 +7,10 @@ const { checkConnection } = require('../config/db');
 const createLaundryRequest = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { clothes, specialInstructions } = req.body;
@@ -32,7 +35,7 @@ const createLaundryRequest = async (req, res) => {
 
         const createdLaundry = await laundry.save();
         const populatedLaundry = await Laundry.findById(createdLaundry._id).populate('user', 'name email');
-        
+
         res.status(201).json(populatedLaundry);
     } catch (error) {
         console.error('Error in createLaundryRequest:', error);
@@ -46,7 +49,10 @@ const createLaundryRequest = async (req, res) => {
 const getMyLaundry = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const laundry = await Laundry.find({ user: req.user._id })
@@ -65,7 +71,10 @@ const getMyLaundry = async (req, res) => {
 const getAllLaundry = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const laundry = await Laundry.find({})
@@ -84,11 +93,14 @@ const getAllLaundry = async (req, res) => {
 const updateLaundryStatus = async (req, res) => {
     try {
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { status } = req.body;
-        
+
         if (!status) {
             return res.status(400).json({ message: 'Status is required' });
         }
@@ -105,7 +117,7 @@ const updateLaundryStatus = async (req, res) => {
         }
 
         laundry.status = status;
-        
+
         // Update dates based on status
         if (status === 'picked_up' && !laundry.pickupDate) {
             laundry.pickupDate = new Date();
@@ -117,7 +129,7 @@ const updateLaundryStatus = async (req, res) => {
         const updatedLaundry = await laundry.save();
         const populatedLaundry = await Laundry.findById(updatedLaundry._id)
             .populate('user', 'name email roomNumber hostelBlock');
-        
+
         res.json(populatedLaundry);
     } catch (error) {
         console.error('Error in updateLaundryStatus:', error);

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { checkConnection, connectDB } = require('../config/db');
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -10,9 +11,11 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
     try {
-        const { checkConnection } = require('../config/db');
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { name, email, password, role, hostelBlock, roomNumber } = req.body;
@@ -56,9 +59,11 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
     try {
-        const { checkConnection } = require('../config/db');
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const { email, password } = req.body;
@@ -93,9 +98,11 @@ const loginUser = async (req, res) => {
 // @access  Private
 const updateUserProfile = async (req, res) => {
     try {
-        const { checkConnection } = require('../config/db');
         if (!checkConnection()) {
-            return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
         }
 
         const user = await User.findById(req.user._id);
