@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/axios';
 import { useAuth } from '../context/AuthContext';
+import { Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -10,6 +11,7 @@ const Dashboard = () => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [deleteLoading, setDeleteLoading] = useState(null);
     const [newRequest, setNewRequest] = useState({
         clothes: [{ itemType: 'T-Shirt', quantity: 1 }],
         specialInstructions: ''
@@ -82,6 +84,25 @@ const Dashboard = () => {
             }
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (e, id) => {
+        e.preventDefault(); // Prevent navigation to details page
+        if (!window.confirm('Are you sure you want to delete this laundry request?')) {
+            return;
+        }
+
+        setDeleteLoading(id);
+        try {
+            await api.delete(`/laundry/${id}`);
+            setSuccess('Laundry request deleted successfully!');
+            fetchLaundry();
+        } catch (error) {
+            console.error('Delete error:', error);
+            setError(error.response?.data?.message || 'Failed to delete request');
+        } finally {
+            setDeleteLoading(null);
         }
     };
 
@@ -201,35 +222,48 @@ const Dashboard = () => {
                                 </div>
                             ) : (
                                 laundry.map((req) => (
-                                    <Link
-                                        key={req._id}
-                                        to={`/laundry/${req._id}`}
-                                        className="block p-4 transition border border-gray-200 dark:border-white/10 rounded-lg cursor-pointer hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/50 bg-gray-50 dark:bg-[#0D0F12]"
-                                    >
-                                        <div className="flex items-start justify-between mb-2">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(req.status)}`}>
-                                                {req.status.replace('_', ' ').toUpperCase()}
-                                            </span>
-                                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                                                {new Date(req.createdAt).toLocaleDateString()}
-                                            </span>
-                                        </div>
-                                        <div className="mt-3">
-                                            <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Items:</p>
-                                            <ul className="space-y-1">
-                                                {req.clothes.map((c, i) => (
-                                                    <li key={i} className="text-sm text-gray-600 dark:text-gray-400">
-                                                        • {c.quantity}x {c.itemType}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        {req.specialInstructions && (
-                                            <p className="mt-2 text-xs italic text-gray-500 dark:text-gray-500">
-                                                Note: {req.specialInstructions}
-                                            </p>
-                                        )}
-                                    </Link>
+                                    <div key={req._id} className="relative group">
+                                        <Link
+                                            to={`/laundry/${req._id}`}
+                                            className="block p-4 transition border border-gray-200 dark:border-white/10 rounded-lg cursor-pointer hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/50 bg-gray-50 dark:bg-[#0D0F12]"
+                                        >
+                                            <div className="flex items-start justify-between mb-2">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(req.status)}`}>
+                                                    {req.status.replace('_', ' ').toUpperCase()}
+                                                </span>
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">
+                                                    {new Date(req.createdAt).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <div className="mt-3">
+                                                <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Items:</p>
+                                                <ul className="space-y-1">
+                                                    {req.clothes.map((c, i) => (
+                                                        <li key={i} className="text-sm text-gray-600 dark:text-gray-400">
+                                                            • {c.quantity}x {c.itemType}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            {req.specialInstructions && (
+                                                <p className="mt-2 text-xs italic text-gray-500 dark:text-gray-500">
+                                                    Note: {req.specialInstructions}
+                                                </p>
+                                            )}
+                                        </Link>
+                                        <button
+                                            onClick={(e) => handleDelete(e, req._id)}
+                                            disabled={deleteLoading === req._id}
+                                            className="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors opacity-100 lg:opacity-0 group-hover:opacity-100"
+                                            title="Delete Request"
+                                        >
+                                            {deleteLoading === req._id ? (
+                                                <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                                            ) : (
+                                                <Trash2 size={18} />
+                                            )}
+                                        </button>
+                                    </div>
                                 ))
                             )}
                         </div>
