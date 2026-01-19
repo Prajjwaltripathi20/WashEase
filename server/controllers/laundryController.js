@@ -137,4 +137,42 @@ const updateLaundryStatus = async (req, res) => {
     }
 };
 
-module.exports = { createLaundryRequest, getMyLaundry, getAllLaundry, updateLaundryStatus };
+// @desc    Delete laundry request
+// @route   DELETE /api/laundry/:id
+// @access  Private
+const deleteLaundryRequest = async (req, res) => {
+    try {
+        if (!checkConnection()) {
+            await connectDB();
+            if (!checkConnection()) {
+                return res.status(503).json({ message: 'Database not connected. Please check server configuration.' });
+            }
+        }
+
+        const laundry = await Laundry.findById(req.params.id);
+
+        if (!laundry) {
+            return res.status(404).json({ message: 'Laundry request not found' });
+        }
+
+        // Check if user is owner (or admin if we had roles in req.user, assuming req.user.role exists)
+        // For now, strict owner check unless admin
+        if (laundry.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(401).json({ message: 'Not authorized to delete this request' });
+        }
+
+        // Optional: Only allow deleting pending requests?
+        // if (laundry.status !== 'pending' && req.user.role !== 'admin') {
+        //     return res.status(400).json({ message: 'Cannot delete a request that is already in process' });
+        // }
+
+        await Laundry.deleteOne({ _id: req.params.id });
+
+        res.json({ message: 'Laundry request removed' });
+    } catch (error) {
+        console.error('Error in deleteLaundryRequest:', error);
+        res.status(500).json({ message: error.message || 'Failed to delete laundry request' });
+    }
+};
+
+module.exports = { createLaundryRequest, getMyLaundry, getAllLaundry, updateLaundryStatus, deleteLaundryRequest };
